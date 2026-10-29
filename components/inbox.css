@@ -209,11 +209,15 @@
 }
 .ib-user:focus-visible,
 .ib-send:focus-visible,
-.ib-input:focus-visible,
 .ib-attach:focus-visible,
 .ib-back:focus-visible {
-  outline: 3px solid #0a3d1e;
+  outline: 1px solid #0a3d1e;
   outline-offset: -3px;
+}
+.ib-input:focus {
+  outline: none;
+  border-color: #06c755;
+  box-shadow: 0 0 0 2px rgba(6, 199, 85, 0.2);
 }
 .ib-av {
   width: 44px;
@@ -444,6 +448,26 @@
   flex: none;
   font-size: 18px;
   color: #06c755;
+}
+.ib-hint-error {
+  background: #fdecea;
+  color: #8a1c14;
+}
+.ib-hint-error ion-icon {
+  color: #e53935;
+}
+.ib-blocked {
+  margin: 10px;
+}
+.ib-tag {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #fdecea;
+  color: #8a1c14;
+  font-size: 12px;
+  font-weight: 600;
 }
 @media (max-width: 700px) {
   .ib {

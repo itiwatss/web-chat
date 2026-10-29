@@ -1,4 +1,5 @@
 import {
+  alertCircle,
   arrowBackOutline,
   closeOutline,
   imageOutline,
@@ -7,6 +8,7 @@ import {
 } from "ionicons/icons";
 
 const ICONS = {
+  "alert-circle": alertCircle,
   "arrow-back-outline": arrowBackOutline,
   "close-outline": closeOutline,
   "image-outline": imageOutline,

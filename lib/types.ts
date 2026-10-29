@@ -27,6 +27,7 @@ export type Conversation = {
   lastTs: number;
   unread: number;
   readToken?: string;
+  blocked?: boolean;
 };
 
 export type ConversationSummary = Omit<Conversation, "readToken">;

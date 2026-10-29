@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getProfile, verifySignature } from "@/lib/line";
 import { previewText, toMessageType } from "@/lib/messages";
-import { getConversation, saveMessage } from "@/lib/store";
+import { getConversation, saveFollow, saveMessage, saveUnfollow } from "@/lib/store";
 import type { LineEmoji } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -39,7 +39,17 @@ export async function POST(req: Request) {
 
   for (const ev of events) {
     const userId = ev.source?.userId;
-    if (ev.source?.type !== "user" || !userId || ev.type !== "message" || !ev.message) continue;
+    if (ev.source?.type !== "user" || !userId) continue;
+
+    if (ev.type === "follow") {
+      await saveFollow(userId, await getProfile(userId));
+      continue;
+    }
+    if (ev.type === "unfollow") {
+      await saveUnfollow(userId);
+      continue;
+    }
+    if (ev.type !== "message" || !ev.message) continue;
 
     const text = previewText(ev.message.type, ev.message.text);
     const existing = await getConversation(userId);

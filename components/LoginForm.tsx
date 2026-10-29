@@ -35,6 +35,12 @@ export default function LoginForm() {
           Use <strong>admin</strong> with password <strong>test1234</strong>
         </span>
       </p>
+      {loginError && (
+        <p className="ib-hint ib-hint-error" role="alert">
+          <ion-icon name="alert-circle" aria-hidden="true"></ion-icon>
+          <span>{loginError}</span>
+        </p>
+      )}
       <input
         className="ib-input"
         value={username}
@@ -55,11 +61,6 @@ export default function LoginForm() {
         autoComplete="current-password"
         required
       />
-      {loginError && (
-        <p className="ib-error" role="alert">
-          {loginError}
-        </p>
-      )}
       <button className="ib-send" style={{ padding: 10 }} disabled={loggingIn}>
         {loggingIn ? "Logging in" : "Log in"}
       </button>

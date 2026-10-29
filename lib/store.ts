@@ -131,9 +131,35 @@ export async function saveMessage(
     lastTs: now,
     unread: dir === "in" ? (prev?.unread ?? 0) + 1 : 0,
     readToken: readToken ?? prev?.readToken,
+    blocked: dir === "in" ? false : prev?.blocked,
   };
   await backend.hset(CONVS, userId, conv);
   return msg;
+}
+
+export const FOLLOW_TEXT = "Added as friend";
+
+export async function saveFollow(
+  userId: string,
+  profile: { displayName?: string; pictureUrl?: string },
+): Promise<void> {
+  const prev = await getConversation(userId);
+  const conv: Conversation = {
+    userId,
+    displayName: profile.displayName ?? prev?.displayName ?? "LINE user",
+    pictureUrl: profile.pictureUrl ?? prev?.pictureUrl,
+    lastText: FOLLOW_TEXT,
+    lastTs: Date.now(),
+    unread: prev?.unread ?? 0,
+    readToken: prev?.readToken,
+    blocked: false,
+  };
+  await backend.hset(CONVS, userId, conv);
+}
+
+export async function saveUnfollow(userId: string): Promise<void> {
+  const prev = await getConversation(userId);
+  if (prev) await backend.hset(CONVS, userId, { ...prev, blocked: true });
 }
 
 export async function markRead(userId: string): Promise<string | undefined> {

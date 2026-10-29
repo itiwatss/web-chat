@@ -114,6 +114,12 @@ function Thread({ conv, onBack }: { conv: Conv; onBack: () => void }) {
           {error}
         </p>
       )}
+      {conv.blocked ? (
+        <p className="ib-hint ib-hint-error ib-blocked" role="status">
+          <ion-icon name="alert-circle" aria-hidden="true"></ion-icon>
+          <span>This user has blocked your LINE OA. You can&apos;t send messages until they add it again.</span>
+        </p>
+      ) : (
       <form className="ib-form" onSubmit={send}>
         <input
           ref={fileRef}
@@ -144,6 +150,7 @@ function Thread({ conv, onBack }: { conv: Conv; onBack: () => void }) {
           {sending ? "Sending" : "Send"}
         </button>
       </form>
+      )}
     </>
   );
 }

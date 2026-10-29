@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { authorized } from "@/lib/auth";
 import { markAsRead, pushImage, pushText } from "@/lib/line";
-import { getMessages, markRead, saveMedia, saveMessage } from "@/lib/store";
+import { getConversation, getMessages, markRead, saveMedia, saveMessage } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,6 +41,9 @@ export async function POST(req: Request, { params }: Ctx) {
     | { text?: string; image?: string; preview?: string }
     | null;
   if (!LINE_USER_ID.test(userId)) return NextResponse.json({ error: "Invalid user" }, { status: 400 });
+  if ((await getConversation(userId))?.blocked) {
+    return NextResponse.json({ error: "This user has blocked your LINE OA" }, { status: 409 });
+  }
 
   if (body?.image !== undefined) return sendImage(req, userId, body.image, body.preview);
 

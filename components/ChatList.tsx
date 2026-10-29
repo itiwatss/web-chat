@@ -69,7 +69,10 @@ export default function ChatList() {
                 <span>{c.displayName}</span>
                 <span className="ib-time">{formatTime(c.lastTs)}</span>
               </div>
-              <div className="ib-last">{c.lastText}</div>
+              <div className="ib-last">
+                {c.blocked && <span className="ib-tag">Blocked</span>}
+                {c.lastText}
+              </div>
             </div>
             {c.unread > 0 && c.userId !== selected && (
               <span className="ib-badge">{c.unread}</span>
