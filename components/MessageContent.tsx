@@ -41,16 +41,21 @@ function ImageMessage({ src }: { src: string }) {
   );
 }
 
+const STICKER_RETRIES = 2;
+
 function StickerMessage({ stickerId }: { stickerId: string }) {
-  const [failed, setFailed] = useState(false);
-  if (failed) return <span className="ib-other">[sticker]</span>;
+  const [attempt, setAttempt] = useState(0);
+  if (attempt > STICKER_RETRIES) return <span className="ib-other">[sticker]</span>;
+  const src = stickerUrl(stickerId) + (attempt ? `?retry=${attempt}` : "");
   return (
     <img
+      key={src}
       className="ib-sticker"
-      src={stickerUrl(stickerId)}
+      src={src}
       alt="Sticker"
-      loading="lazy"
-      onError={() => setFailed(true)}
+      width={140}
+      height={140}
+      onError={() => setTimeout(() => setAttempt((a) => a + 1), 1000 * (attempt + 1))}
     />
   );
 }
